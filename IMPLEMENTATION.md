@@ -1,6 +1,6 @@
 # Django on Cloudflare Workers — Implementation Checklist
 
-**Status:** complete; deployed at `https://dj.heroic.ch`.
+**Status:** complete; deployed and torn down on 2026-10-21. No Cloudflare resources remain.
 
 **Goal:** Run a minimal Django site with a homepage and admin on Cloudflare Workers, backed by one Durable Object, with CLI/CI-only deployment.
 

@@ -1,8 +1,8 @@
 # Django on Cloudflare Workers
 
-A minimal Django site running on Cloudflare Workers at `https://dj.heroic.ch`. It has a homepage and Django admin, backed by a SQLite Durable Object.
+A minimal Django site that ran on Cloudflare Workers at `https://dj.heroic.ch`, with a homepage and Django admin backed by a SQLite Durable Object.
 
-The site is deployed. See [`IMPLEMENTATION.md`](IMPLEMENTATION.md) for the task checklist and recorded deviations.
+The proof of concept was deployed on 2026-10-21 and torn down the same day. No Cloudflare resources remain. The code and setup instructions are retained for future use. See [`IMPLEMENTATION.md`](IMPLEMENTATION.md) for the task checklist and recorded deviations.
 
 ## Goals
 
@@ -148,7 +148,7 @@ Verify the local Worker before deploying:
 
 Add automated tests for the homepage and bootstrap authorization behavior. Exercise the real Worker locally as part of verification because Django's ordinary test runner may not reproduce Workers bindings or the Durable Object backend.
 
-## Verification results
+## Verification results (before teardown)
 
 Verified on 2026-10-21:
 
@@ -159,8 +159,8 @@ Verified on 2026-10-21:
 - `POST /__bootstrap/admin/` returns `{"status": "created"}` once, then `{"status": "exists"}`.
 - `POST /__bootstrap/migrate/` without a token returns `401`.
 - Admin user and session data persist across requests and a redeploy.
-- GitHub Actions deployment succeeds: https://github.com/puckdoug/cloudflare-django/actions/runs/39704539814
-- Bootstrap is disabled (`BOOTSTRAP_ENABLED=0`) and the token secret is removed; the endpoints return `404`.
+- GitHub Actions deployment succeeded: https://github.com/puckdoug/cloudflare-django/actions/runs/39704539814
+- Bootstrap was disabled (`BOOTSTRAP_ENABLED=0`) and the token secret removed; the endpoints returned `404`.
 
 ## Known limitations and risks
 
@@ -180,3 +180,15 @@ Verified on 2026-10-21:
 - [Cloudflare CLI](https://developers.cloudflare.com/cf/)
 - [`cf` in CI](https://developers.cloudflare.com/cf/ci/)
 - [Migrate a Wrangler project](https://developers.cloudflare.com/cf/wrangler/migrate/)
+
+## Teardown (2026-10-21)
+
+Removed:
+
+- The `cloudflare-django` Worker and its `workers.dev` route.
+- The `DjangoDO` Durable Object namespace and all stored data, using a `deleted` tombstone deploy.
+- The `dj.heroic.ch` custom domain and its DNS record.
+- All GitHub Actions repository secrets and the deploy workflow.
+- Local `CF.sh` and `.dev.vars` credentials.
+
+The Cloudflare API token used for this POC should be revoked in the dashboard if it is not needed elsewhere.

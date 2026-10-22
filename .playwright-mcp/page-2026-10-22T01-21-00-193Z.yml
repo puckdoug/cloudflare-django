@@ -1,0 +1,6 @@
+- main [ref=e2]:
+  - heading "Django on Cloudflare Workers" [level=1] [ref=e3]
+  - paragraph [ref=e4]: Homepage served by Django in a Python Worker.
+  - paragraph [ref=e5]:
+    - link "Django admin" [ref=e6] [cursor=pointer]:
+      - /url: /admin/
