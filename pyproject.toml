@@ -1,0 +1,10 @@
+[project]
+name = "cloudflare-django"
+version = "0.1.0"
+description = "Django proof of concept on Cloudflare Workers"
+requires-python = ">=3.12"
+dependencies = [
+    "django==5.2.6",
+    "django-cf==0.2.17",
+    "tzdata==2026.5",
+]
