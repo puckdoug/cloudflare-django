@@ -511,7 +511,8 @@ __pycache__/
 .wrangler/
 .cloudflare/
 src/vendor/
-staticfiles/
+staticfiles/*
+!staticfiles/.gitkeep
 .vendor-requirements.txt
 ```
 
@@ -565,13 +566,15 @@ staticfiles/
 }
 ```
 
+Run: `mkdir -p staticfiles && touch staticfiles/.gitkeep`
+
 Run: `npm install`
 Expected: creates `node_modules` and `package-lock.json` with `cf` and `wrangler` installed.
 
 - [ ] **Step 2: Commit the scaffold so `cf migrate` has a clean worktree**
 
 ```bash
-git add .gitignore package.json package-lock.json wrangler.jsonc
+git add .gitignore package.json package-lock.json wrangler.jsonc staticfiles/.gitkeep
 git commit -m "chore: add Cloudflare tooling"
 ```
 
@@ -698,7 +701,7 @@ Expected: `src/vendor/django` exists and is about 34 MB.
 - [ ] **Step 9: Build and verify the bundle**
 
 Run: `npx cf build`
-Expected: build completes.
+Expected: build completes. Wrangler validates `assets.directory` before running the build command, so `staticfiles/.gitkeep` must already exist.
 
 Run: `test -d .cloudflare/output/v0/workers/default/bundle/vendor/django && echo BUNDLED`
 Expected: prints `BUNDLED`.

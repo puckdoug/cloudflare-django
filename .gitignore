@@ -6,5 +6,6 @@ __pycache__/
 .wrangler/
 .cloudflare/
 src/vendor/
-staticfiles/
+staticfiles/*
+!staticfiles/.gitkeep
 .vendor-requirements.txt
