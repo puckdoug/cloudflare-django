@@ -20,6 +20,7 @@ fi
 
 uv sync --locked
 npm ci
+rm -rf .cloudflare
 ./scripts/vendor.sh
 
 secrets_file="$(mktemp)"
@@ -39,7 +40,8 @@ jq -n \
     DJANGO_SUPERUSER_PASSWORD: $password
   }' > "$secrets_file"
 
-npx cf deploy --secrets-file "$secrets_file"
+npx wrangler deploy
+npx wrangler secret bulk "$secrets_file"
 
 for _ in $(seq 1 30); do
   if curl -fsS -o /dev/null https://dj.heroic.ch/; then

@@ -1,15 +1,27 @@
 import os
-import sys
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "vendor"))
-
-from app.wsgi import application
 from django_cf import DjangoCFDurableObject
 from workers import DurableObject, WorkerEntrypoint
+
+ENV_KEYS = (
+    "BOOTSTRAP_ENABLED",
+    "DJANGO_SECRET_KEY",
+    "BOOTSTRAP_TOKEN",
+    "DJANGO_SUPERUSER_USERNAME",
+    "DJANGO_SUPERUSER_EMAIL",
+    "DJANGO_SUPERUSER_PASSWORD",
+)
 
 
 class DjangoDO(DjangoCFDurableObject, DurableObject):
     def get_app(self):
+        for key in ENV_KEYS:
+            value = getattr(self.env, key, None)
+            if value is not None:
+                os.environ[key] = value
+
+        from app.wsgi import application
+
         return application
 
 

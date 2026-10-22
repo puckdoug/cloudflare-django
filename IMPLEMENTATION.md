@@ -8,10 +8,21 @@
 
 **Spec:** `README.md`
 
+## Execution notes (2026-10-21)
+
+Deployment is live. The original tasks remain below, with these corrections discovered during execution:
+
+- `cf deploy` uploaded only `index.py`; `python_modules` never reached the runtime. Use `npx wrangler deploy` for deployment. `cf` remains for account and zone operations.
+- Dependencies and the Django app must live in `python_modules/` at the project root, not under `src/`.
+- `src/index.py` copies `BOOTSTRAP_*` and `DJANGO_*` bindings from `self.env` into `os.environ` inside `get_app()` before Django settings load.
+- Secrets upload with `npx wrangler secret bulk`.
+- Tests run with `DJANGO_TEST=1`.
+- `staticfiles/.gitkeep` is required because Wrangler validates the assets directory before running `collectstatic`.
+
 ## Global Constraints
 
 - Use `uv` for all Python dependency operations. Never use `pip`.
-- Use `cf` for build, dev, deploy, zone checks, and account operations. Do not use `pywrangler`.
+- Use `cf` for account and zone operations. Use `npx wrangler deploy` for build/deploy; `cf deploy` does not upload Python modules. Do not use `pywrangler`.
 - Pin `cf` and `wrangler` in `package.json`; pin Python dependencies in `pyproject.toml` and `uv.lock`.
 - Python runtime dependencies only: `django==5.2.6`, `django-cf==0.2.17`, `tzdata==2026.5`.
 - Hostname: `dj.heroic.ch`. Zone: `heroic.ch`, active in the target Cloudflare account.
@@ -659,7 +670,9 @@ git rm wrangler.jsonc
 import os
 import sys
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "vendor"))
+HERE = os.path.dirname(__file__)
+sys.path.insert(0, HERE)
+sys.path.insert(0, os.path.join(HERE, "vendor"))
 
 from app.wsgi import application
 from django_cf import DjangoCFDurableObject
