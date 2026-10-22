@@ -15,5 +15,5 @@
   "durable_objects": { "bindings": [{ "name": "DO_STORAGE", "class_name": "DjangoDO" }] },
   "migrations": [{ "tag": "v1", "new_sqlite_classes": ["DjangoDO"] }],
   "routes": [{ "pattern": "dj.heroic.ch", "custom_domain": true }],
-  "vars": { "BOOTSTRAP_ENABLED": "1" }
+  "vars": { "BOOTSTRAP_ENABLED": "0" }
 }

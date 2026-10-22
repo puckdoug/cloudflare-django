@@ -159,8 +159,8 @@ Verified on 2026-10-21:
 - `POST /__bootstrap/admin/` returns `{"status": "created"}` once, then `{"status": "exists"}`.
 - `POST /__bootstrap/migrate/` without a token returns `401`.
 - Admin user and session data persist across requests and a redeploy.
-
-Not yet verified: the GitHub Actions run, because the repository secrets have not been set.
+- GitHub Actions deployment succeeds: https://github.com/puckdoug/cloudflare-django/actions/runs/39704539814
+- Bootstrap is disabled (`BOOTSTRAP_ENABLED=0`) and the token secret is removed; the endpoints return `404`.
 
 ## Known limitations and risks
 
