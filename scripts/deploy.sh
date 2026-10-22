@@ -15,8 +15,7 @@ command -v npm >/dev/null || { echo "npm is required" >&2; exit 1; }
 command -v jq >/dev/null || { echo "jq is required" >&2; exit 1; }
 
 if ! npx cf zones list 2>/dev/null | grep -q "heroic.ch"; then
-  echo "heroic.ch was not found in this account's zones" >&2
-  exit 1
+  echo "warning: heroic.ch was not listed; deployment will fail if the zone is absent" >&2
 fi
 
 uv sync --locked

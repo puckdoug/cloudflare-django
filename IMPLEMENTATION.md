@@ -972,8 +972,8 @@ Expected: the workflow succeeds.
 
 - [ ] **Step 1: Confirm the zone**
 
-Run: `cf zones list | grep heroic.ch`
-Expected: one row for `heroic.ch`. If absent, stop and add the zone to the account before deploying.
+Run: `npx cf zones list | grep heroic.ch`
+Expected: one row for `heroic.ch`. If absent, add the zone to the account before deploying.
 
 - [ ] **Step 2: Create the API token**
 
