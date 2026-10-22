@@ -1,0 +1,15 @@
+{
+  "name": "cloudflare-django",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "cf build",
+    "dev": "cf dev",
+    "deploy": "cf deploy"
+  },
+  "devDependencies": {
+    "cf": "1.0.0-beta.20",
+    "wrangler": "4.151.3"
+  }
+}
