@@ -192,3 +192,5 @@ Removed:
 - Local `CF.sh` and `.dev.vars` credentials.
 
 The Cloudflare API token used for this POC should be revoked in the dashboard if it is not needed elsewhere.
+
+See [`TEARDOWN.md`](TEARDOWN.md) for the exact commands and verification checks.
