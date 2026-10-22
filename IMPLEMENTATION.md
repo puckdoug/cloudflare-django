@@ -18,7 +18,7 @@
 - No Cloudflare dashboard steps for routine work. The one-time API token creation is the only exception.
 - Never commit secrets, `.dev.vars`, `src/vendor/`, `staticfiles/`, or `.cloudflare/`.
 - Durable Object storage has no transactions. Do not rely on `transaction.atomic()`.
-- Test command: `PYTHONPATH=src uv run python -m unittest discover -s tests -v`.
+- Test command: `DJANGO_TEST=1 PYTHONPATH=src uv run python -m unittest discover -s tests -v`.
 - Commit after every task.
 
 ---
@@ -66,7 +66,7 @@ class HomepageTests(SimpleTestCase):
 
 - [ ] **Step 2: Run the test and confirm it fails**
 
-Run: `PYTHONPATH=src uv run python -m unittest discover -s tests -v`
+Run: `DJANGO_TEST=1 PYTHONPATH=src uv run python -m unittest discover -s tests -v`
 Expected: FAIL. `uv` may report a missing project or Python may report a missing module; no tests pass.
 
 - [ ] **Step 3: Create the Python project**
@@ -174,7 +174,7 @@ TEMPLATES = [
 WSGI_APPLICATION = "app.wsgi.application"
 
 # Workers CI lacks the sqlite3 module. Empty DATABASES lets collectstatic run.
-if os.getenv("WORKERS_CI") == "1":
+if os.getenv("WORKERS_CI") == "1" or os.getenv("DJANGO_TEST") == "1":
     DATABASES = {}
 else:
     DATABASES = {
@@ -258,12 +258,12 @@ application = get_wsgi_application()
 
 - [ ] **Step 4: Run the test and confirm it passes**
 
-Run: `PYTHONPATH=src uv run python -m unittest discover -s tests -v`
+Run: `DJANGO_TEST=1 PYTHONPATH=src uv run python -m unittest discover -s tests -v`
 Expected: `OK` with one test.
 
 - [ ] **Step 5: Run Django's system check**
 
-Run: `cd src && uv run python manage.py check`
+Run: `cd src && DJANGO_TEST=1 uv run python manage.py check`
 Expected: `System check identified no issues`.
 
 - [ ] **Step 6: Commit**
@@ -374,7 +374,7 @@ class BootstrapAuthTests(SimpleTestCase):
 
 - [ ] **Step 2: Run the tests and confirm they fail**
 
-Run: `PYTHONPATH=src uv run python -m unittest discover -s tests -v`
+Run: `DJANGO_TEST=1 PYTHONPATH=src uv run python -m unittest discover -s tests -v`
 Expected: FAIL with `AttributeError` or 404 for the missing routes.
 
 - [ ] **Step 3: Implement the bootstrap views**
@@ -472,7 +472,7 @@ urlpatterns = [
 
 - [ ] **Step 5: Run the tests and confirm they pass**
 
-Run: `PYTHONPATH=src uv run python -m unittest discover -s tests -v`
+Run: `DJANGO_TEST=1 PYTHONPATH=src uv run python -m unittest discover -s tests -v`
 Expected: `OK` with all tests passing.
 
 - [ ] **Step 6: Commit**
@@ -866,7 +866,7 @@ jobs:
           npm ci
 
       - name: Run tests
-        run: PYTHONPATH=src uv run python -m unittest discover -s tests -v
+        run: DJANGO_TEST=1 PYTHONPATH=src uv run python -m unittest discover -s tests -v
 
       - name: Vendor runtime dependencies
         run: ./scripts/vendor.sh
