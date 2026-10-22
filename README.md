@@ -2,7 +2,7 @@
 
 A proof of concept for running a minimal Django site on Cloudflare Workers. The site will have a homepage and Django admin, use a Durable Object as its database, and be available at `dj.heroic.ch`.
 
-This README is the implementation plan. The repository is currently just getting started; the steps below describe the intended setup, not a completed deployment.
+This README describes the design and deployment model. The repository is currently just getting started; the sections below describe the intended setup, not a completed deployment. For exact commands, files, tests, and checkboxes, see [`IMPLEMENTATION.md`](IMPLEMENTATION.md).
 
 ## Goals
 
